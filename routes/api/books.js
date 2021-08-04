@@ -33,7 +33,7 @@ router.post('/', (req, res) => {
 router.put('/:id', (req, res) => {
     Book.findByIdAndUpdate(req.params.id, req.body)
         .then(book => res.json({ msg: 'Updated successfully'}))
-        .catch(err => res.status(400).json({ error: 'Unable tp update the Database'}));
+        .catch(err => res.status(400).json({ error: 'Unable to update the Database'}));
 });
 
 // delete book by id
