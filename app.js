@@ -1,6 +1,7 @@
 
 const express = require('express');
 const connectDB = require('./config/db');
+var cors = require('cors');
 
 const app = express()
 
@@ -8,6 +9,12 @@ const app = express()
 const books = require('./routes/api/books');
 
 connectDB();
+
+// cors
+app.use(cors({ origin: true, credentials: true }));
+
+// Init Middleware
+app.use(express.json({ extended: false }));
 
 app.get('/', (req, res) => res.send('Hello World'));
 
