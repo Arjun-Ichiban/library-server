@@ -5,6 +5,11 @@ const router = express.Router();
 // Load Book model
 const Book = require('../../models/Book');
 
+
+// Validation
+const { inputvalidate } = require('../../validation/inputvalidate') 
+
+
 // tests books route
 router.get('/test', (req, res) => res.send('Book Route Testing!'));
 
@@ -28,18 +33,8 @@ router.post('/', (req, res) => {
     const Joi = require('joi');
     const data = req.body;
 
-    const schema = Joi.object().keys({
-        title: Joi.string().alphanum().min(3).max(30).required(),
-        isbn: Joi.string().required(),
-        author: Joi.string().required(),
-        description: Joi.string().required(),
-        published_date: Joi.date().required(),
-        publisher: Joi.string().required()
-    });
-
-    const { value, error } = schema.validate(data);
+    const { value, error } = inputvalidate(data);
     const valid = error == null; 
-    console.log(value);
 
     if(!valid){
         res.status(400).json({ error : 'Enter a valid name'});
