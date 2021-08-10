@@ -24,9 +24,31 @@ router.get('/:id', (req, res) => {
 
 // add/save book
 router.post('/', (req, res) => {
-    Book.create(req.body)
-        .then(book => res.json({ msg: 'Book added successfully'}))
-        .catch(err => res.status(400).json({ error: 'Unable to add this book'}));
+
+    const Joi = require('joi');
+    const data = req.body;
+
+    const schema = Joi.object().keys({
+        title: Joi.string().alphanum().min(3).max(30).required(),
+        isbn: Joi.string().required(),
+        author: Joi.string().required(),
+        description: Joi.string().required(),
+        published_date: Joi.date().required(),
+        publisher: Joi.string().required()
+    });
+
+    const { value, error } = schema.validate(data);
+    const valid = error == null; 
+    console.log(value);
+
+    if(!valid){
+        res.status(400).json({ error : 'Enter a valid name'});
+    }
+    else {
+        Book.create(value)
+            .then(book => res.json({ msg: 'Book added successfully'}))
+            .catch(err => res.status(400).json({ error: 'Unable to add this book'}));
+    }
 });
 
 // update book
