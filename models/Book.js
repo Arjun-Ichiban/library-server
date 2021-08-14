@@ -1,5 +1,4 @@
 
-const { required } = require('joi');
 const mongoose = require('mongoose');
 
 const BookSchema = new mongoose.Schema({
@@ -14,10 +13,6 @@ const BookSchema = new mongoose.Schema({
     genre: {
         type: String,
         required: true
-    },
-    updated_date: {
-        type: Date,
-        default: Date.now
     }
 });
 

@@ -5,6 +5,9 @@ const router = express.Router();
 // Load Book model
 const Book = require('../../models/Book');
 
+//Load Genre model
+const Genre = require('../../models/Genre')
+
 
 // Validation
 const { inputvalidate } = require('../../validation/inputvalidate') 
@@ -12,6 +15,14 @@ const { inputvalidate } = require('../../validation/inputvalidate')
 
 // tests books route
 router.get('/test', (req, res) => res.send('Book Route Testing!'));
+
+// Get all genre
+router.get('/genre', (req, res) => {
+    Genre.find()
+         .then(genre => res.json(genre))
+         .catch(err => res.status(404).json({ nogenrefound: 'No Genre Found'}));
+})
+
 
 // Get all books
 router.get('/', (req, res) => {
@@ -30,7 +41,6 @@ router.get('/:id', (req, res) => {
 // add/save book
 router.post('/', (req, res) => {
 
-    const Joi = require('joi');
     const data = req.body;
 
     const { value, error } = inputvalidate(data);
@@ -39,10 +49,24 @@ router.post('/', (req, res) => {
     if(!valid){
         res.status(400).json({ error : 'Enter a valid name'});
     }
-    else {
-        Book.create(value)
-            .then(book => res.json({ msg: 'Book added successfully'}))
-            .catch(err => res.status(400).json({ error: 'Unable to add this book'}));
+    else{
+        const g = Genre.findOne({
+            genre: value.genre
+        }).then( result => {
+            if(!result){
+                const genre = new Genre({genre: value.genre});
+                genre.save();
+            }
+        });
+
+        const book = new Book({
+            title: value.title,
+            author: value.author,
+            genre: value.genre
+        });
+
+        const result = book.save();
+        res.json(result);
     }
 });
 

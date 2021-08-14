@@ -21,6 +21,13 @@ app.get('/', (req, res) => res.send('Hello World'));
 // use Routes
 app.use('/api/books', books);
 
+// authentication
+app.get('/users', (req, res) => {
+    res.json(users)
+})
+
+app.post('/')
+
 const port = process.env.PORT || 8082;
 
 app.listen(port, () => console.log(`Server running on port ${port}`));
