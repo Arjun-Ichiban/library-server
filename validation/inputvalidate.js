@@ -11,4 +11,25 @@ const inputvalidate = data =>{
     return schema.validate(data);
 }
 
-module.exports = { inputvalidate }
+const uservalidate = data =>{
+
+    const schema = Joi.object().keys({
+        name: Joi.string().required(),
+        password: Joi.string().min(6).required(),
+        email: Joi.string().email().required(),
+    });
+
+    return schema.validate(data);
+}
+
+const authvalidate = data =>{
+
+    const schema = Joi.object().keys({
+        password: Joi.string().min(6).required(),
+        email: Joi.string().email().required(),
+    });
+
+    return schema.validate(data);
+}
+
+module.exports = { inputvalidate, uservalidate, authvalidate }

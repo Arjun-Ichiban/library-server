@@ -2,31 +2,33 @@
 const express = require('express');
 const connectDB = require('./config/db');
 var cors = require('cors');
+const passport = require("passport");
 
 const app = express()
 
-// routes
-const books = require('./routes/api/books');
-
 connectDB();
 
-// cors
-app.use(cors({ origin: true, credentials: true }));
+// routes
+const books = require('./routes/api/books');
+const users = require('./routes/api/users');
+
+
+// // cors
+// app.use(cors({ origin: true, credentials: true }));
 
 // Init Middleware
 app.use(express.json({ extended: false }));
 
 app.get('/', (req, res) => res.send('Hello World'));
 
+// Passport middleware
+app.use(passport.initialize());
+// Passport config
+require("./config/passport")(passport);
+
 // use Routes
 app.use('/api/books', books);
-
-// authentication
-app.get('/users', (req, res) => {
-    res.json(users)
-})
-
-app.post('/')
+app.use('/api/users', users);
 
 const port = process.env.PORT || 8082;
 

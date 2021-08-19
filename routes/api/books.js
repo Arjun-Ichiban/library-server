@@ -8,10 +8,8 @@ const Book = require('../../models/Book');
 //Load Genre model
 const Genre = require('../../models/Genre')
 
-
 // Validation
 const { inputvalidate } = require('../../validation/inputvalidate') 
-
 
 // tests books route
 router.get('/test', (req, res) => res.send('Book Route Testing!'));
