@@ -3,8 +3,17 @@ const express = require('express');
 const connectDB = require('./config/db');
 var cors = require('cors');
 const passport = require("passport");
+const bodyParser = require("body-parser");
 
 const app = express()
+
+app.use(
+    bodyParser.urlencoded({
+      extended: false
+    })
+  );
+app.use(bodyParser.json());
+
 
 connectDB();
 
@@ -13,8 +22,8 @@ const books = require('./routes/api/books');
 const users = require('./routes/api/users');
 
 
-// // cors
-// app.use(cors({ origin: true, credentials: true }));
+// cors
+app.use(cors({ origin: true, credentials: true }));
 
 // Init Middleware
 app.use(express.json({ extended: false }));

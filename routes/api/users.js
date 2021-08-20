@@ -14,13 +14,13 @@ router.get('/test', (req, res) => res.send('User Route Testing!'));
 
 router.post("/register", (req, res) => {
 
-    const data = req.body;
+    const data = req.body;   
 
     const { value, error }  = uservalidate(data);
     const valid = error == null; 
 
-    if(!valid){
-        return res.status(400).json(errors);
+    if(valid){
+        return res.status(400).json(value);
     }
     
     User.findOne({ email: req.body.email }).then(user => {
@@ -50,14 +50,13 @@ router.post("/register", (req, res) => {
 router.post("/login", (req, res) => {
 
     const data = req.body;
-
-    console.log(data);
     
     const { value, error } = authvalidate(data);
     const valid = error == null;
 
     if(!valid){
-        return res.status(400).json(errors);
+        console.log("error");
+        return res.status(400).json(value);
     }
 
     const email = req.body.email;
